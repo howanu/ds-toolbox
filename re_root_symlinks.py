@@ -33,9 +33,14 @@ def symlinks(top_dir):
             path = Path(pathname)
             print(path)
             if path.is_symlink():
-                destination_path = path.resolve()
-                if destination_path.root == "/":
-                    link_dict[pathname] = destination_path.as_posix()
+                print("Resolving " + path.as_posix())
+                try:
+                    destination_path = path.resolve()
+                    if destination_path.root == "/":
+                        link_dict[pathname] = destination_path.as_posix()
+                except Exception as e:
+                    print("Corrupt symlink " + path.as_posix())
+                    print(e)
     return link_dict
 
 def re_root_symlinks(top_dir, new_root):
